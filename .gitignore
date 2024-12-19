@@ -167,3 +167,5 @@ postgres_data
 *.pdf
 db
 *.zip
+drivers/*
+!drivers/.placeholder
