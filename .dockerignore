@@ -170,3 +170,4 @@ customer-dashboard
 postgres_data
 db
 *.zip
+drivers
