@@ -169,3 +169,4 @@ sample.env
 customer-dashboard
 postgres_data
 db
+*.zip

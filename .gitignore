@@ -166,3 +166,4 @@ mariadb_data
 postgres_data
 *.pdf
 db
+*.zip
