@@ -5,6 +5,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 class EditorConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        print("Client connected")
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"editor_{self.room_name}"
 
