@@ -1,9 +1,21 @@
 ## Dependencies
 
+NodeJS 22.12, yarn, Python 3.12, Redis 17
+
+**Install Backend dependencies**
+
 ```
+cd api
 python3 -m venv ENV
 source ENV/bin/activate
 pip install -r requirements.txt
+```
+
+**Install Frontend dependencies**
+
+```
+cd web
+yarn install
 ```
 
 ## Setup

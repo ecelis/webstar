@@ -30,14 +30,20 @@ const TextEditor = function () {
     // };
   }, []);
 
-  useEffect(() => {
-    const onTextChange = (delta: Delta, prevDelta: Delta, source: string) => {
-      console.log(delta);
-      if (source !== "user") return;
-      client?.send(sendText("yay"));
-    };
-    quill?.on("text-change", onTextChange);
-  }, [client, quill]);
+  // useEffect(() => {
+  //   console.log('lege', client, quill)
+  //   if (client === null || quill === null) return;
+
+  //   const onTextChange = (delta: Delta, oldDelta: Delta, source: string) => {
+  //     console.log(delta);
+  //     if (source !== "user") return;
+  //     client?.send(JSON.stringify(delta));
+  //   };
+    
+  //   quill?.on("text-change", onTextChange);
+
+  //   // return () => { quill?.off("text-change", onTextChange)}
+  // }, [client, quill]);
 
   const editorRef = useCallback((container: HTMLDivElement) => {
     if (container === null) return;
