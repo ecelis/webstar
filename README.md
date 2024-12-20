@@ -17,7 +17,9 @@ secret.
 
 ```
 
-## Testings
+### Run
+
+## Testing
 
 **TESTS WON'T RUN WITHOUT THE SELENIUM DRIVER AVAILABLE, SO SKIP TESTING**
 Running tests will require installing the appropriate driver, which can be not as
