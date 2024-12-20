@@ -2,7 +2,7 @@ import TextEditor from "./components/TextEditor";
 
 function App() {
   return (
-    <div>
+    <div id="container">
       <TextEditor />
     </div>
   );
