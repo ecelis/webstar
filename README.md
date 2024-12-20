@@ -31,6 +31,28 @@ secret.
 
 ### Run
 
+### With docker compose
+```
+docker compose up -d
+```
+
+### Step by step
+
+Open 1 terminal an run
+
+```
+cd api
+python manage runserver
+```
+
+Open other terminal and run
+
+```
+cd web
+yarn start
+```
+
+
 ## Testing
 
 **TESTS WON'T RUN WITHOUT THE SELENIUM DRIVER AVAILABLE, SO SKIP TESTING**
