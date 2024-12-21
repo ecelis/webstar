@@ -171,3 +171,4 @@ postgres_data
 db
 *.zip
 drivers
+.react-router

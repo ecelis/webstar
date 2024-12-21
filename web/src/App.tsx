@@ -1,10 +1,11 @@
-import TextEditor from "./components/TextEditor";
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './routes';
 
 function App() {
   return (
-    <div id="container">
-      <TextEditor />
-    </div>
+    <Router>
+      <AppRoutes />      
+    </Router>
   );
 }
 

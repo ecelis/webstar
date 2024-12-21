@@ -7,7 +7,8 @@ class EditorConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         print("Client connected")
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
-        self.room_group_name = f"editor_{self.room_name}"
+        self.room_group_name = self.room_name
+        print(repr(self.room_group_name))
 
         # Join room group
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
