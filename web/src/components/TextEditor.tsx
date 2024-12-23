@@ -2,19 +2,25 @@ import Quill, { Delta } from "quill";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function sendText(text: string): string {
-  const msg = {
-    type: "message",
-    text: text,
-    id: "clientID",
-    date: Date.now(),
+interface SocketMessage {
+  type: 'document' | 'text' | 'delta';
+  payload?: string | null;
+  timestamp?: number;
+}
+
+function sendSocketMessage(socket: WebSocket | null, {type, payload}: SocketMessage) {
+  if (socket?.readyState !== WebSocket.OPEN) {
+    console.error('WebSocket is not open');
+    return;
+  }
+  
+  const message: SocketMessage = {
+    type,
+    payload,
+    timestamp: Date.now()
   };
-
-  // Send the msg object as a JSON-formatted string.
-  return JSON.stringify({ message: text });
-
-  // Blank the text input element, ready to receive the next line of text from the user.
-  // document.getElementById("text").value = "";
+  
+  socket.send(JSON.stringify(message));
 }
 
 const TextEditor = function () {
@@ -49,8 +55,7 @@ const TextEditor = function () {
 
     const onTextChange = (delta: Delta, oldDelta: Delta, source: string) => {
       if (source !== "user") return;
-
-      client?.send(JSON.stringify(delta));
+      // client?.send(JSON.stringify(delta));
     };
 
     quill?.on("text-change", onTextChange);
@@ -79,7 +84,9 @@ const TextEditor = function () {
       console.log("WebSocket is open now.");
       // quill.setContents(document)
       // quill.enable()
-      client.send(JSON.stringify({ documentId: documentId }));
+      // client.send(JSON.stringify({ documentId: documentId }));
+      sendSocketMessage(client, {type: 'document', payload: documentId});
+
     };
     client.onclose = function () {
       console.log("WebSocket is closed now.");
