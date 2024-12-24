@@ -12,8 +12,7 @@ const NewDocument = () => {
       });
       console.log(response.data);
       if (response.data.id) {
-        navigate(`/document/${response.data.id}`);
-        // window.location.href = ;
+        navigate(`/document/${response.data.id}`, { replace: true });
       }
     } catch (error) {
       console.error("Failed to create document:", error);

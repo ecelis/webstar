@@ -18,12 +18,10 @@ class EditorConsumer(AsyncWebsocketConsumer):
             document = await Document.objects.filter(
                 Q(id=self.room_name) & (Q(owner=self.user) | Q(collaborator=self.user))
             ).afirst()
-            print(document)
             if not document:
                 document = await Document.objects.acreate(
                     id=self.room_name, owner=self.user
                 )
-            print(document)
             self.room_group_name = self.room_name
             await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 

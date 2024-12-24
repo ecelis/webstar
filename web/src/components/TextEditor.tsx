@@ -39,8 +39,8 @@ const TextEditor = function () {
     const editor = document.createElement("div");
     container.append(editor);
     const _quill = new Quill(editor, { theme: "snow" });
-    _quill.disable();
-    _quill.setText("Loading");
+    // _quill.disable();
+    // _quill.setText("Loading");
     setQuill(_quill);
   }, []);
 
