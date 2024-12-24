@@ -73,5 +73,5 @@ PATH=../drivers/chrome-linux64:$PATH python manage.py test editor.tests
 ### Routes
 
 - `/user/$`
-- `editor/$`
+- `document/$`
 - `auth/`

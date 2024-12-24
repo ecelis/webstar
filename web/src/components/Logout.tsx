@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../lib/api";
 import { LoginParams } from "./Login";
+import Button from "@mui/material/Button";
 
 const Logout = ({ setAuth }: LoginParams) => {
   const navigate = useNavigate();
@@ -17,7 +18,11 @@ const Logout = ({ setAuth }: LoginParams) => {
     }
   };
 
-  return <button onClick={handleLogout}>Logout</button>;
+  return (
+    <Button type="button" variant="outlined" onClick={handleLogout}>
+      Logout
+    </Button>
+  );
 };
 
 export default Logout;

@@ -16,18 +16,28 @@ from rest_framework import status
 from django.contrib.auth import authenticate
 
 
-def index(request):
-    return render(request, "editor/index.html")
-
-
-def room(request, room_name):
-    return render(request, "editor/room.html", {"room_name": room_name})
-
-
 class DocumentViewSet(viewsets.ModelViewSet):
-    queryset = Document.objects.all()
     serializer_class = DocumentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        print(repr(self.request))
+        user = self.request.user
+        return Document.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    def create(self, request):
+        try:
+            serializer = DocumentSerializer(data=request.data)
+            if not serializer.is_valid():
+                print("Validation errors:", serializer.errors)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return super().create(request)
+        except Exception as e:
+            print("Error:", str(e))
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -38,7 +48,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.request.user.is_staff:
             permission_classes = [IsAdminUser]
         else:
-            permission_classes = [IsAuthenticatedOrReadOnly]
+            permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
 
 
@@ -80,7 +90,6 @@ class LogoutView(APIView):
 
     def post(self, request):
         try:
-            # Delete the user's token to log them out
             request.user.auth_token.delete()
             return Response(
                 {"message": "Successfully logged out"}, status=status.HTTP_200_OK

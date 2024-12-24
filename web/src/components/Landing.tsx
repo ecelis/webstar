@@ -5,6 +5,8 @@ import Logout from "./Logout";
 import SignInContainer from "./SignInContainer";
 import Card from "./Card";
 import Divider from "@mui/material/Divider";
+import NewDocument from "./NewDocument";
+
 const getData = (field: string): string | null => {
   const data = sessionStorage.getItem("wsauth");
   if (!data) return null;
@@ -18,6 +20,7 @@ const Landing = () => {
     <>
       <h1>Hola, {getData("username")}!</h1>
       <Logout setAuth={setAuth} />
+      <NewDocument />
     </>
   ) : (
     <SignInContainer direction="column" justifyContent="space-between">
