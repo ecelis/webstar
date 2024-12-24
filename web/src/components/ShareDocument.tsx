@@ -18,13 +18,25 @@ const ShareDocument = ({ documentId }: ShareDocumentParams) => {
     axiosInstance
       .get("user/")
       .then((res) => {
-        const collaborators = res.data.results.filter(
+        const users = res.data.results.filter(
           (user) => user.username !== username
         );
-        setRows(collaborators);
+        if (documentId && users.length > 0) {
+          axiosInstance
+            .get(`document/${documentId}/`)
+            .then((res) => {
+              // TODO refactor nested code this is an ugly hack
+              const selectedRows = users.filter((row) => {
+                return res.data.collaborator.includes(row.url);
+              });
+              setRows(users);
+              setSelectedUsers(selectedRows.map((row) => row.url)); // TODO fix existing collaborators
+            })
+            .catch((error) => console.error(error));
+        }
       })
       .catch((error) => console.error(error));
-  }, [username]);
+  }, []);
 
   const handleSelectionChange = (newSelection) => {
     setSelectedUsers(newSelection);
@@ -69,6 +81,7 @@ const ShareDocument = ({ documentId }: ShareDocumentParams) => {
         checkboxSelection
         sx={{ border: 0 }}
         onRowSelectionModelChange={handleSelectionChange}
+        selectionModel={selectedUsers} // Add this line
       />
     </Box>
   ) : (

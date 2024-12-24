@@ -16,7 +16,6 @@ export default function DocumentList() {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
     {
       field: "title",
       headerName: "Title",
