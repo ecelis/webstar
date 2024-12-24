@@ -1,6 +1,7 @@
 import Quill, { Delta } from "quill";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { getData } from "../lib/auth";
 
 interface SocketMessage {
   type: "document" | "text" | "delta";
@@ -27,6 +28,7 @@ function sendSocketMessage(
 }
 
 const TextEditor = function () {
+  const [auth, setAuth] = useState(sessionStorage.getItem("wsauth"));
   const [client, setClient] = useState<WebSocket | null>(null);
   const [quill, setQuill] = useState<Quill | null>(null);
   const { documentId } = useParams();
@@ -43,8 +45,13 @@ const TextEditor = function () {
   }, []);
 
   useEffect(() => {
+    console.log("dId", documentId);
     if (!documentId) return;
-    const ws = new WebSocket(`ws://localhost:8000/ws/editor/${documentId}/`);
+    const ws = new WebSocket(
+      `ws://localhost:8000/api/document/${documentId}/?token=${getData(
+        "token"
+      )}`
+    );
     ws.addEventListener("error", console.error);
     // ws.addEventListener("message", onMessage)
     setClient(ws);
@@ -54,6 +61,7 @@ const TextEditor = function () {
   }, [documentId]);
 
   useEffect(() => {
+    // User changes text
     if (quill === null) return;
 
     const onTextChange = (delta: Delta, oldDelta: Delta, source: string) => {
@@ -69,6 +77,7 @@ const TextEditor = function () {
   }, [quill]);
 
   useEffect(() => {
+    // Remote changes updates contentss
     const onMessage = (event: MessageEvent<any>) => {
       const { message } = JSON.parse(event.data);
       const delta: Delta = JSON.parse(message) as Delta;
@@ -76,6 +85,7 @@ const TextEditor = function () {
     };
     // @ts-ignore
     if (client) client.addEventListener("message", onMessage);
+    // original example has a return () => socket.off("receive-changes", onMessage); here
   }, [quill, client]);
 
   useEffect(() => {
@@ -104,7 +114,11 @@ const TextEditor = function () {
     // }
   }, [client, quill, documentId]);
 
-  return <div id="editor" ref={editorRef}></div>;
+  return auth ? (
+    <div id="editor" ref={editorRef}></div>
+  ) : (
+    <h1>Access denied</h1>
+  );
 };
 
 export default TextEditor;

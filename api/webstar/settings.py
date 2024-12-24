@@ -142,7 +142,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 ASGI_APPLICATION = "webstar.asgi.application"
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",  # "channels.layers.InMemoryChannelLayer",
         "CONFIG": {
             "hosts": [("127.0.0.1", 6379)],
         },
@@ -150,7 +150,6 @@ CHANNEL_LAYERS = {
 }
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],

@@ -12,29 +12,21 @@ import os
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
-from channels.security.websocket import AllowedHostsOriginValidator
+from channels.security.websocket import AllowedHostsOriginValidator, OriginValidator
 from editor.routing import websocket_urlpatterns
+from editor.middlewares import TokenAuthMiddleWare
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webstar.settings")
 
 application = get_asgi_application()
 
-
+print(repr(websocket_urlpatterns))
 application = ProtocolTypeRouter(
     {
         "http": application,
-        # Just HTTP for now. (We can add other protocols later.)
-        "websocket": AllowedHostsOriginValidator(
-            AuthMiddlewareStack(
-                URLRouter(
-                    websocket_urlpatterns
-                    # [
-                    #     re_path(
-                    #         r"^front(end)/$", consumers.AsyncChatConsumer.as_asgi()
-                    #     ),
-                    # ]
-                )
-            )
-        ),
+        "websocket": TokenAuthMiddleWare(OriginValidator(
+            AuthMiddlewareStack(URLRouter(websocket_urlpatterns)),
+            ["http://localhost:3000", "http://127.0.0.1:3000"],
+        ),)
     }
 )

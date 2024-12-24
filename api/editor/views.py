@@ -21,9 +21,8 @@ class DocumentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        print(repr(self.request))
         user = self.request.user
-        return Document.objects.filter(user=user)
+        return Document.objects.filter(owner=user)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
