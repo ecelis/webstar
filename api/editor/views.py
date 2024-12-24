@@ -1,9 +1,7 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser,
-    IsAuthenticatedOrReadOnly,
 )
 from .serializers import UserSerializer, DocumentSerializer
 from .models import Document
@@ -37,6 +35,22 @@ class DocumentViewSet(viewsets.ModelViewSet):
         except Exception as e:
             print("Error:", str(e))
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        collaborator_urls = request.data.get("collaborator", [])
+        collaborator_ids = [url.split("/")[-2] for url in collaborator_urls]
+
+        try:
+            collaborators = User.objects.filter(id__in=map(int, collaborator_ids))
+
+            serializer = self.get_serializer(instance, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(collaborator=collaborators)
+        except Exception as e:
+            print(f"Document partial_update failed {e}")
+
+        return Response(serializer.data)
 
 
 class UserViewSet(viewsets.ModelViewSet):

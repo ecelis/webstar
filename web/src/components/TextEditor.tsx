@@ -2,6 +2,21 @@ import Quill, { Delta } from "quill";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getData } from "../lib/auth";
+import { Box } from "@mui/material";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import Paper from "@mui/material/Paper";
+import { DataGrid, GridRenderCellParams } from "@mui/x-data-grid";
+import ShareDocument from "./ShareDocument";
 
 interface SocketMessage {
   type: "document" | "text" | "delta";
@@ -31,6 +46,7 @@ const TextEditor = function () {
   const [auth, setAuth] = useState(sessionStorage.getItem("wsauth"));
   const [client, setClient] = useState<WebSocket | null>(null);
   const [quill, setQuill] = useState<Quill | null>(null);
+  const [open, setOpen] = useState(false);
   const { documentId } = useParams();
 
   const editorRef = useCallback((container: HTMLDivElement) => {
@@ -45,7 +61,8 @@ const TextEditor = function () {
   }, []);
 
   useEffect(() => {
-    console.log("dId", documentId);
+    // Connect to documentId's room
+    console.log("documentId", documentId);
     if (!documentId) return;
     const ws = new WebSocket(
       `ws://localhost:8000/api/document/${documentId}/?token=${getData(
@@ -78,6 +95,7 @@ const TextEditor = function () {
 
   useEffect(() => {
     // Remote changes updates contentss
+
     const onMessage = (event: MessageEvent<any>) => {
       const { message } = JSON.parse(event.data);
       const delta: Delta = JSON.parse(message) as Delta;
@@ -114,8 +132,34 @@ const TextEditor = function () {
     // }
   }, [client, quill, documentId]);
 
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+
   return auth ? (
-    <div id="editor" ref={editorRef}></div>
+    <Box>
+      <ButtonGroup variant="contained" aria-label="Document controls">
+        <Button>Save</Button>
+        <Button variant="outlined" onClick={toggleDrawer}>
+          Share
+        </Button>
+      </ButtonGroup>
+      <Paper sx={{ height: "100%", width: "100%" }}>
+        {" "}
+        <div id="editor" ref={editorRef}></div>
+      </Paper>
+      <Drawer
+        sx={{
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: 290 },
+        }}
+        variant="persistent"
+        anchor="right"
+        open={open}
+        onClose={toggleDrawer}
+      >
+        <ShareDocument documentId={documentId} />
+      </Drawer>
+    </Box>
   ) : (
     <h1>Access denied</h1>
   );

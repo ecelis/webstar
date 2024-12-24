@@ -10,6 +10,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class DocumentSerializer(serializers.HyperlinkedModelSerializer):
+    collaborator = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="user-detail"
+    )
+
     class Meta:
         model = Document
-        fields = ["id", "title", "content", "owner"]
+        fields = ["id", "title", "content", "owner", "collaborator"]

@@ -4,6 +4,17 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../lib/api";
 
 export default function DocumentList() {
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    axiosInstance
+      .get("/document")
+      .then((res) => {
+        setRows(res.data.results);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
     {
@@ -37,16 +48,6 @@ export default function DocumentList() {
       //     `${row.firstName || ""} ${row.lastName || ""}`,
     },
   ];
-  const [rows, setRows] = useState([]);
-
-  useEffect(() => {
-    axiosInstance
-      .get("/document")
-      .then((res) => {
-        setRows(res.data.results);
-      })
-      .catch((error) => console.error(error));
-  }, []);
 
   return (
     <Box sx={{ height: 400, width: "100%" }}>
