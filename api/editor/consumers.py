@@ -19,6 +19,8 @@ class EditorConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        print("receive")
+        print(repr(text_data))
         # message = text_data_json["message"]
         # # Send message to room group
         await self.channel_layer.group_send(
@@ -27,5 +29,6 @@ class EditorConsumer(AsyncWebsocketConsumer):
 
     async def editor_message(self, event):
         message = event["message"]
-
+        print("Editor message")
+        print(repr(message))
         await self.send(text_data=json.dumps({"message": message}))

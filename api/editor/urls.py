@@ -1,9 +1,10 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+from .views import DocumentViewSet
 
-from . import views
-
+router = routers.DefaultRouter()
+router.register(r"", DocumentViewSet, basename="document")
 
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("<str:room_name>/", views.room, name="room"),
+    path("", include(router.urls)),
 ]

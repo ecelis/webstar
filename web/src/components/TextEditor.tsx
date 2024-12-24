@@ -3,23 +3,26 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 interface SocketMessage {
-  type: 'document' | 'text' | 'delta';
+  type: "document" | "text" | "delta";
   payload?: string | null;
   timestamp?: number;
 }
 
-function sendSocketMessage(socket: WebSocket | null, {type, payload}: SocketMessage) {
+function sendSocketMessage(
+  socket: WebSocket | null,
+  { type, payload }: SocketMessage
+) {
   if (socket?.readyState !== WebSocket.OPEN) {
-    console.error('WebSocket is not open');
+    console.error("WebSocket is not open");
     return;
   }
-  
+
   const message: SocketMessage = {
     type,
     payload,
-    timestamp: Date.now()
+    timestamp: Date.now(),
   };
-  
+
   socket.send(JSON.stringify(message));
 }
 
@@ -73,7 +76,7 @@ const TextEditor = function () {
     };
     // @ts-ignore
     if (client) client.addEventListener("message", onMessage);
-  }, [quill]);
+  }, [quill, client]);
 
   useEffect(() => {
     console.log(documentId);
@@ -85,8 +88,7 @@ const TextEditor = function () {
       // quill.setContents(document)
       // quill.enable()
       // client.send(JSON.stringify({ documentId: documentId }));
-      sendSocketMessage(client, {type: 'document', payload: documentId});
-
+      sendSocketMessage(client, { type: "document", payload: documentId });
     };
     client.onclose = function () {
       console.log("WebSocket is closed now.");

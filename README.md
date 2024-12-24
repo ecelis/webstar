@@ -32,6 +32,7 @@ secret.
 ### Run
 
 ### With docker compose
+
 ```
 docker compose up -d
 ```
@@ -52,7 +53,6 @@ cd web
 yarn start
 ```
 
-
 ## Testing
 
 **TESTS WON'T RUN WITHOUT THE SELENIUM DRIVER AVAILABLE, SO SKIP TESTING**
@@ -69,3 +69,9 @@ unzip chrome-linux64.zip -d drivers/
 cd webstar
 PATH=../drivers/chrome-linux64:$PATH python manage.py test editor.tests
 ```
+
+### Routes
+
+- `/user/$`
+- `editor/$`
+- `auth/`
