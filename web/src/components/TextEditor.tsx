@@ -59,10 +59,7 @@ const TextEditor = function () {
     const onMessage = (event: MessageEvent<any>) => {
       try {
         const data = JSON.parse(event.data);
-        console.log("aqui", event.type, data);
-        console.log(Object.keys(data).includes("type"));
         if (data.type === "text") {
-          console.log(data.payload);
           quill?.setContents(JSON.parse(data.payload));
         }
         if (data.type === "delta") {

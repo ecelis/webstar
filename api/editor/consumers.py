@@ -4,8 +4,6 @@ from django.db.models import Q
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from editor.models import Document
-from django.core import serializers
-from asgiref.sync import sync_to_async
 
 
 class EditorConsumer(AsyncWebsocketConsumer):
