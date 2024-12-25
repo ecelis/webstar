@@ -1,8 +1,26 @@
-## Dependencies
+##  Docker Quick Start
 
-NodeJS 22.12, yarn, Python 3.12, Redis 17
+```
+docker compose up
+```
 
-**Install Backend dependencies**
+Browse to http://localhost:8000
+
+**Username:** `admin`
+**Password:**: `test123`
+
+## Full instructions (not required if you are running the docker container)
+
+These are instructions for Ubuntu 24.04 systems, Windows and MacOS users will need to adapt. Although this should work without modifications in WSL2.
+
+Base dependencies (I won´t provide instructions to install these, check the provided links):
+
+- NodeJS 22.12
+- yarn
+- Python 3.12
+- Redis 17
+
+**Install API dependencies**
 
 ```
 cd api
@@ -25,19 +43,14 @@ yarn install
 **SECRET_KEY,** the secret key must be a large random value and it must be kept
 secret.
 
-```
+### Database
 
 ```
-
-### Run
-
-### With docker compose
-
-```
-docker compose up -d
+cd api
+python3 manage.py migrate
 ```
 
-### Step by step
+### API
 
 Open 1 terminal an run
 
@@ -46,12 +59,16 @@ cd api
 python manage runserver
 ```
 
+### Web
+
 Open other terminal and run
 
 ```
 cd web
 yarn start
 ```
+
+Browse to http://localhost:3000
 
 ## Testing
 

@@ -1,6 +1,17 @@
 services:
-  redis:
-    image: redis:7
-    ports:
-      - "6379:6379"
-    restart: always
+  #  redis:
+  #    image: redis:7
+  #    ports:
+  #      - "6379:6379"
+  #    restart: always
+  api:
+      build: .
+      image: ecelis/webstar
+      command: python manage.py runserver 0.0.0.0:8000
+      ports:
+          - "8000:8000"
+          #    depends_on:
+          #- redis
+          #      links:
+          #- redis
+          #restart: always

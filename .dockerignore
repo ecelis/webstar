@@ -172,3 +172,4 @@ db
 *.zip
 drivers
 .react-router
+*.swp

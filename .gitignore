@@ -173,4 +173,5 @@ drivers/*
 api/frontend
 api/static
 api/staticfiles
+*.swp
 !web/src/lib
