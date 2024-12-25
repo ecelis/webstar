@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.db.models import Q
 
 from channels.generic.websocket import AsyncWebsocketConsumer
-from editor.models import Document
+from editor.models.document import Document
 
 
 class EditorConsumer(AsyncWebsocketConsumer):

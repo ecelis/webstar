@@ -30,14 +30,6 @@ export default function DocumentList() {
       },
     },
     {
-      field: "content",
-      headerName: "Content",
-      width: 300,
-      editable: false,
-      // @ts-ignore
-      valueGetter: (value, row) => row.content,
-    },
-    {
       field: "collaborator",
       headerName: "Collaborators",
       sortable: false,

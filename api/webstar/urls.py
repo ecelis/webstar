@@ -18,7 +18,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
-from editor.views import UserViewSet, RegisterView, LoginView, LogoutView
+from editor.views.user import UserViewSet
+from editor.views.auth import RegisterView, LoginView, LogoutView
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -26,11 +27,9 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 API_PREFIX = "api/"
 
-
 @ensure_csrf_cookie
 def get_csrf_token(request):
     return JsonResponse({"csrfToken": request.META.get("CSRF_COOKIE")})
-
 
 router = routers.DefaultRouter()
 router.register(r"user", UserViewSet, basename="user")
