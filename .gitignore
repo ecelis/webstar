@@ -173,3 +173,4 @@ drivers/*
 api/frontend
 api/static
 api/staticfiles
+!web/src/lib
