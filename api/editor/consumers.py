@@ -52,7 +52,6 @@ class EditorConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         try:
             data = json.loads(text_data)
-
             if data["type"] == "delta":
                 sender_channel = self.channel_name
                 await self.channel_layer.group_send(
@@ -63,6 +62,14 @@ class EditorConsumer(AsyncWebsocketConsumer):
                         "sender_channel": sender_channel,
                     },
                 )
+
+            # if data["type"] == "save":
+            #     print(repr(data))
+            #     document, _ = await sync_to_async(Document.objects.get_or_create)(id=int(self.room_group_name))
+            #     print(_)
+            #     await sync_to_async(document.save)()
+            #     print(repr(document ))
+
         except Exception as e:
             print(f"receive failed {str(e)}")
 

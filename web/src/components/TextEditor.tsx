@@ -59,17 +59,14 @@ const TextEditor = function () {
     const onMessage = (event: MessageEvent<any>) => {
       try {
         const data = JSON.parse(event.data);
-
-        switch (data.type) {
-          case "text":
-            quill?.setText(data.payload);
-            break;
-          case "delta":
-            quill?.updateContents(data.payload);
-            break;
-          default:
-            if (!documentId) return;
-            updateDocument(documentId, quill?.getContents());
+        console.log("aqui", event.type, data);
+        console.log(Object.keys(data).includes("type"));
+        if (data.type === "text") {
+          console.log(data.payload);
+          quill?.setContents(JSON.parse(data.payload));
+        }
+        if (data.type === "delta") {
+          quill?.updateContents(data.payload);
         }
       } catch (e) {
         console.log(e);
@@ -78,6 +75,16 @@ const TextEditor = function () {
     // @ts-ignore
     if (client) client.addEventListener("message", onMessage);
   }, [quill, client]);
+
+  // useEffect(() => {
+  //   // save periodically
+  //   if (quill === null || client === null) return;
+  //   const interval = setInterval(async () => {
+  //     const payload = quill?.getContents();
+  //     // sendSocketMessage(client, {type: "save", payload: documentId });
+  //     await updateDocument(documentId, quill?.getContents());
+  //   }, 2000);
+  // }, [quill, client]);
 
   useEffect(() => {
     if (client === null || quill === null) return;
@@ -96,7 +103,12 @@ const TextEditor = function () {
   return auth ? (
     <Box>
       <ButtonGroup variant="contained" aria-label="Document controls">
-        <Button id="saveButton">Save</Button>
+        <Button
+          id="saveButton"
+          onClick={() => updateDocument(documentId, quill?.getContents() || "")}
+        >
+          Save
+        </Button>
         <Button id="shareButton" variant="outlined" onClick={toggleDrawer}>
           Share
         </Button>

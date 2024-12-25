@@ -1,7 +1,9 @@
 from rest_framework import viewsets
 from rest_framework.permissions import (
+    BasePermission,
     IsAuthenticated,
     IsAdminUser,
+    SAFE_METHODS,
 )
 from .serializers import UserSerializer, DocumentSerializer
 from .models import Document
@@ -15,9 +17,16 @@ from django.contrib.auth import authenticate
 from django.db.models import Q
 
 
+class IsOwnerOrCollaborator(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in SAFE_METHODS:
+            return True
+        return obj.owner == request.user or request.user in obj.collaborator.all()
+
+
 class DocumentViewSet(viewsets.ModelViewSet):
     serializer_class = DocumentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOrCollaborator]
 
     def get_queryset(self):
         user = self.request.user
@@ -44,17 +53,32 @@ class DocumentViewSet(viewsets.ModelViewSet):
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
-        collaborator_urls = request.data.get("collaborator", [])
-        collaborator_ids = [url.split("/")[-2] for url in collaborator_urls]
+        print(repr(request.data))
+        request_keys = request.data.keys()
+        if "content" in request_keys:
+            try:
+                serializer = self.get_serializer(
+                    instance, data=request.data, partial=True
+                )
+                serializer.is_valid(raise_exception=True)
+                serializer.save(content=request.data["content"])
+            except Exception as e:
+                print(f"Document content partial_update failed {e}")
 
-        try:
-            collaborators = User.objects.filter(id__in=map(int, collaborator_ids))
+        if "collaborator" in request_keys:
+            collaborator_urls = request.data.get("collaborator", [])
+            collaborator_ids = [url.split("/")[-2] for url in collaborator_urls]
 
-            serializer = self.get_serializer(instance, data=request.data, partial=True)
-            serializer.is_valid(raise_exception=True)
-            serializer.save(collaborator=collaborators)
-        except Exception as e:
-            print(f"Document partial_update failed {e}")
+            try:
+                collaborators = User.objects.filter(id__in=map(int, collaborator_ids))
+
+                serializer = self.get_serializer(
+                    instance, data=request.data, partial=True
+                )
+                serializer.is_valid(raise_exception=True)
+                serializer.save(collaborator=collaborators)
+            except Exception as e:
+                print(f"Document collaborator partial_update failed {e}")
 
         return Response(serializer.data)
 
