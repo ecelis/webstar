@@ -81,7 +81,7 @@ const ShareDocument = ({ documentId }: ShareDocumentParams) => {
         checkboxSelection
         sx={{ border: 0 }}
         onRowSelectionModelChange={handleSelectionChange}
-        selectionModel={selectedUsers} // Add this line
+        selectionModel={selectedUsers}
       />
     </Box>
   ) : (

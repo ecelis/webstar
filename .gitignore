@@ -170,3 +170,6 @@ db
 drivers/*
 !drivers/.placeholder
 .react-router
+api/frontend
+api/static
+api/staticfiles

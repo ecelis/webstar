@@ -42,9 +42,6 @@ export default function DocumentList() {
       headerName: "Collaborators",
       sortable: false,
       width: 300,
-      // @ts-ignore
-      //   valueGetter: (value, row) =>
-      //     `${row.firstName || ""} ${row.lastName || ""}`,
     },
   ];
 

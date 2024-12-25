@@ -10,7 +10,7 @@ const NewDocument = () => {
         content: "",
         title: "Untitled",
       });
-      console.log(response.data);
+
       if (response.data.id) {
         navigate(`/document/${response.data.id}`, { replace: true });
       }

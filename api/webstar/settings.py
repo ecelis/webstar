@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "daphne",
     "channels",
     "editor",
+    "frontend",
     "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -160,3 +161,8 @@ CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000", "http://localhost:3000"]
 CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]

@@ -20,13 +20,19 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webstar.settings")
 
 application = get_asgi_application()
 
-print(repr(websocket_urlpatterns))
 application = ProtocolTypeRouter(
     {
         "http": application,
-        "websocket": TokenAuthMiddleWare(OriginValidator(
-            AuthMiddlewareStack(URLRouter(websocket_urlpatterns)),
-            ["http://localhost:3000", "http://127.0.0.1:3000"],
-        ),)
+        "websocket": TokenAuthMiddleWare(
+            OriginValidator(
+                AuthMiddlewareStack(URLRouter(websocket_urlpatterns)),
+                [
+                    "http://localhost:3000",
+                    "http://127.0.0.1:3000",
+                    "http://localhost:8000",
+                    "http://127.0.0.1:8000",
+                ],
+            ),
+        ),
     }
 )

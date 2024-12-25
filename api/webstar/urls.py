@@ -36,6 +36,7 @@ router = routers.DefaultRouter()
 router.register(r"user", UserViewSet, basename="user")
 
 urlpatterns = [
+    path("", include("frontend.urls")),
     path(API_PREFIX, include(router.urls)),
     path(API_PREFIX + "document/", include("editor.urls")),
     path(API_PREFIX + "admin/", admin.site.urls),
