@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Editor</title>
+  </head>
+  <body>
+    <textarea id="editor-log" cols="100" rows="20"></textarea><br />
+    <input id="editor-message-input" type="text" size="100" /><br />
+    <input id="editor-message-submit" type="button" value="Send" />
+    {{ room_name|json_script:"room-name" }}
+    <script>
+      const roomName = JSON.parse(
+        document.getElementById("room-name").textContent
+      );
+
+      const editorSocket = new WebSocket(
+        "ws://" + window.location.host + "/ws/editor/" + roomName + "/"
+      );
+
+      editorSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        document.querySelector("#editor-log").value += data.message + "\n";
+      };
+
+      editorSocket.onclose = function (e) {
+        console.error("editor socket closed unexpectedly");
+      };
+
+      document.querySelector("#editor-message-input").focus();
+      document.querySelector("#editor-message-input").onkeyup = function (e) {
+        if (e.key === "Enter") {
+          // enter, return
+          document.querySelector("#editor-message-submit").click();
+        }
+      };
+
+      document.querySelector("#editor-message-submit").onclick = function (e) {
+        const messageInputDom = document.querySelector("#editor-message-input");
+        const message = messageInputDom.value;
+        editorSocket.send(
+          JSON.stringify({
+            message: message,
+          })
+        );
+        messageInputDom.value = "";
+      };
+    </script>
+  </body>
+</html>
