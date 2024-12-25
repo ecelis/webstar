@@ -22,5 +22,7 @@ COPY ./api/ .
 # Expose the port that the Django app will run on
 EXPOSE 8000
 
+ENTRYPOINT ["python", "manage.py", "migrate"]
+
 # Start the Django development server
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
