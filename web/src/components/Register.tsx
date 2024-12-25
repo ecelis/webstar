@@ -14,7 +14,7 @@ const Register = ({ setAuth }: LoginParams) => {
 
   const validateInputs = () => {
     let isValid = true;
-    // We should should sanitize and apply any validations here
+    // TODO We should should sanitize and apply any validations here
     if (!details.password || details.password.length < 6) {
       setMessage("Password must be at least 6 characters long.");
       isValid = false;

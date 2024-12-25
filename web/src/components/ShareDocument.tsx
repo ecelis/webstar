@@ -4,10 +4,7 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axiosInstance from "../lib/api";
 import { getData } from "../lib/auth";
-
-interface ShareDocumentParams {
-  documentId: string | undefined;
-}
+import { ShareDocumentParams } from "../lib/types";
 
 const ShareDocument = ({ documentId }: ShareDocumentParams) => {
   const [rows, setRows] = useState([]);

@@ -9,6 +9,7 @@ import Drawer from "@mui/material/Drawer";
 import Paper from "@mui/material/Paper";
 import ShareDocument from "./ShareDocument";
 import sendSocketMessage from "../lib/ws";
+import { updateDocument } from "../lib/document";
 
 const TextEditor = function () {
   const [auth, setAuth] = useState(sessionStorage.getItem("wsauth"));
@@ -67,7 +68,8 @@ const TextEditor = function () {
             quill?.updateContents(data.payload);
             break;
           default:
-            console.log("default", data);
+            if (!documentId) return;
+            updateDocument(documentId, quill?.getContents());
         }
       } catch (e) {
         console.log(e);
@@ -94,8 +96,8 @@ const TextEditor = function () {
   return auth ? (
     <Box>
       <ButtonGroup variant="contained" aria-label="Document controls">
-        <Button>Save</Button>
-        <Button variant="outlined" onClick={toggleDrawer}>
+        <Button id="saveButton">Save</Button>
+        <Button id="shareButton" variant="outlined" onClick={toggleDrawer}>
           Share
         </Button>
       </ButtonGroup>

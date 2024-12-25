@@ -7,10 +7,7 @@ import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-
-interface LoginParams {
-  setAuth: React.Dispatch<React.SetStateAction<string | null>>;
-}
+import { LoginParams } from "../lib/types";
 
 const Login = ({ setAuth }: LoginParams) => {
   const [credentials, setCredentials] = useState({
