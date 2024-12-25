@@ -11,19 +11,28 @@ Browse to http://localhost:8000
 
 ## Full instructions (not required if you are running the docker container)
 
-These are instructions for Ubuntu 24.04 systems, Windows and MacOS users will need to adapt. Although this should work without modifications in WSL2.
+These are instructions for Ubuntu 24.04 systems, Windows and MacOS users will need to adapt.
+Although these instructions should work without modifications in WSL2.
 
 Base dependencies (I won´t provide instructions to install these, check the provided links):
 
-- NodeJS 22.12
-- yarn
-- Python 3.12
-- Redis 17
+- NodeJS 22.12 https://nodejs.org/en
+- yarn https://yarnpkg.com/
+- Python 3.12 https://www.python.org/
+- Python venv module, it should be part of python, but Ubutnu ships it as a separate package
+
+Get the code
+
+```
+git clone https://github.com/ecelis/webstar.git
+cd webstar
+
+```
 
 **Install API dependencies**
 
 ```
-cd api
+sudo apt install python3-venv
 python3 -m venv ENV
 source ENV/bin/activate
 pip install -r requirements.txt
@@ -31,41 +40,37 @@ pip install -r requirements.txt
 
 **Install Frontend dependencies**
 
+NodeJS (optional, skip this step if you already have NodeJS installed)
 ```
-cd web
-yarn install
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+source ~/.bashrc
+nvm install --lts ; nvm alias default node
+npm install -g yarn
 ```
-
-## Setup
-
-### Environment variables
 
 **SECRET_KEY,** the secret key must be a large random value and it must be kept
-secret.
+secret. You can set an environment variable, but it will not be permanent.
 
-### Database
+```
+export SECRET_KEY=veryLongValue
+```
+
+**Start the API**
 
 ```
 cd api
 python3 manage.py migrate
+python3 manage.py runserver
 ```
 
-### API
-
-Open 1 terminal an run
-
-```
-cd api
-python manage runserver
-```
-
-### Web
+**Start the web frontend**
 
 Open other terminal and run
 
 ```
 cd web
-yarn start
+yarn install
+REACT_APP_API_URL=http://localhost:8000/api/ yarn start
 ```
 
 Browse to http://localhost:3000
