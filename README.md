@@ -1,13 +1,20 @@
 ##  Docker Quick Start
 
 ```
-docker compose up
+docker run -p 8000:8000 ecelis/webstar
 ```
 
 Browse to http://localhost:8000
 
 **Username:** `admin`
 **Password:**: `test123`
+
+
+or if you cloned the repository already
+
+```
+docker compose up
+```
 
 ## Full instructions (not required if you are running the docker container)
 
