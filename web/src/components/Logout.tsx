@@ -22,7 +22,7 @@ const Logout = ({ setAuth }: LoginParams) => {
     <Button
       type="button"
       variant="outlined"
-      sx={{ my: 2, display: "block" }}
+      sx={{ my: 2, textDecorationSkipdisplay: "block" }}
       onClick={handleLogout}
     >
       Logout
