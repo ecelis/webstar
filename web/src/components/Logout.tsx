@@ -12,14 +12,19 @@ const Logout = ({ setAuth }: LoginParams) => {
       await axiosInstance.post("auth/logout/");
       setAuth(null);
       sessionStorage.removeItem("wsauth");
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Error during logout:", error);
     }
   };
 
   return (
-    <Button type="button" variant="outlined" onClick={handleLogout}>
+    <Button
+      type="button"
+      variant="outlined"
+      sx={{ my: 2, color: "white", display: "block" }}
+      onClick={handleLogout}
+    >
       Logout
     </Button>
   );

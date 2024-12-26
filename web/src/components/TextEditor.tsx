@@ -100,6 +100,9 @@ const TextEditor = function () {
   return auth ? (
     <Box>
       <ButtonGroup variant="contained" aria-label="Document controls">
+        <div>
+          <a href="/">Home</a>
+        </div>
         <Button
           id="saveButton"
           onClick={() => updateDocument(documentId, quill?.getContents() || "")}
@@ -110,6 +113,14 @@ const TextEditor = function () {
           Share
         </Button>
       </ButtonGroup>
+      <div>
+        <ul>
+          <li>
+            {`Click Share again to hide the drawer (there is also a bug with sharing, they autosave, but you might lost some collaborators if not careful)`}
+          </li>
+          <li>{`Document does NOT auto-save, click Save button to save it.`}</li>
+        </ul>
+      </div>
       <Paper sx={{ height: "100%", width: "100%" }}>
         {" "}
         <div id="editor" ref={editorRef}></div>
