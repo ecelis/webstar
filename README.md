@@ -1,4 +1,4 @@
-##  Docker Quick Start
+## Docker Quick Start
 
 ```
 docker run -p 8000:8000 ecelis/webstar
@@ -6,9 +6,7 @@ docker run -p 8000:8000 ecelis/webstar
 
 Browse to http://localhost:8000
 
-**Username:** `admin`
-**Password:**: `test123`
-
+No default user is available, Register first and login have fun
 
 or if you cloned the repository already
 
@@ -48,6 +46,7 @@ pip install -r requirements.txt
 **Install Frontend dependencies**
 
 NodeJS (optional, skip this step if you already have NodeJS installed)
+
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 source ~/.bashrc
